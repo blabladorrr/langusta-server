@@ -5,7 +5,8 @@ public enum RecipeMealType {
     LUNCH("LUNCH"),
     DINNER("DINNER"),
     APPETIZER("APPETIZER"),
-    DESSERT("DESSERT");
+    DESSERT("DESSERT"),
+    SNACK("SNACK");
 
     private final String recipMealType;
 
@@ -17,5 +18,4 @@ public enum RecipeMealType {
     public String toString() {
         return this.recipMealType;
     }
-
 }

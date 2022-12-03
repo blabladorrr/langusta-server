@@ -9,5 +9,4 @@ class LangustaServerApplicationTests {
 	@Test
 	void contextLoads() {
 	}
-
 }
