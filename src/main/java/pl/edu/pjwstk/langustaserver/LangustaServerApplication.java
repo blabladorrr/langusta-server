@@ -9,5 +9,4 @@ public class LangustaServerApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(LangustaServerApplication.class, args);
 	}
-
 }
