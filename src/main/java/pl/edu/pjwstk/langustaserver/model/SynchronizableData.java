@@ -9,7 +9,7 @@ public class SynchronizableData {
         id = UUID.randomUUID();
     }
 
-    public UUID getRecipeId() {
+    public UUID getId() {
         return id;
     }
 }
