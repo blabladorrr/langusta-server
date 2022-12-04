@@ -1,7 +1,5 @@
 package pl.edu.pjwstk.langustaserver.model;
 
-import org.springframework.cglib.core.Local;
-
 import java.time.LocalDateTime;
 import java.util.UUID;
 
