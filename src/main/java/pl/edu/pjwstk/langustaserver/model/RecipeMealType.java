@@ -8,14 +8,14 @@ public enum RecipeMealType {
     DESSERT("DESSERT"),
     SNACK("SNACK");
 
-    private final String recipMealType;
+    private final String recipeMealType;
 
-    RecipeMealType(final String recipMealType) {
-        this.recipMealType = recipMealType;
+    RecipeMealType(final String recipeMealType) {
+        this.recipeMealType = recipeMealType;
     }
 
     @Override
     public String toString() {
-        return this.recipMealType;
+        return this.recipeMealType;
     }
 }
