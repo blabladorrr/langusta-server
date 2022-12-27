@@ -7,6 +7,12 @@ public class SynchronizableData {
     protected UUID id;
     protected LocalDateTime createdAt;
     protected LocalDateTime updatedAt;
+    /**
+     * data created by the current user is "owned" by them
+     * it can be modified or deleted
+     * do not save in database
+     */
+    protected Boolean isOwned;
 
     public SynchronizableData() {
         id = UUID.randomUUID();

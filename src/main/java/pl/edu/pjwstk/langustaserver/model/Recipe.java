@@ -2,10 +2,8 @@ package pl.edu.pjwstk.langustaserver.model;
 
 import java.util.List;
 
-public class Recipe extends SynchronizableData {
+public class Recipe extends PublishableData {
     private String title;
-    private String description;
-    private String author;
     private Boolean isPublic;
     private String externalSourceUrl;
     private Integer likeCount;
@@ -17,12 +15,11 @@ public class Recipe extends SynchronizableData {
     private List<RecipeStep> steps;
 
     public Recipe(String title, String description, String author,
-                              Boolean isPublic, String externalSourceUrl, Integer likeCount, Integer rating,
-                              Integer calorieCount, RecipeMealType mealType, List<RecipeIngredient> ingredients,
-                              RecipePreparationTime preparationTime, List<RecipeStep> steps) {
+                  Boolean isPublic, String externalSourceUrl, Integer likeCount, Integer rating,
+                  Integer calorieCount, RecipeMealType mealType, List<RecipeIngredient> ingredients,
+                  RecipePreparationTime preparationTime, List<RecipeStep> steps) {
+        super(author, description);
         this.title = title;
-        this.description = description;
-        this.author = author;
         this.isPublic = isPublic;
         this.externalSourceUrl = externalSourceUrl;
         this.likeCount = likeCount;
@@ -52,10 +49,6 @@ public class Recipe extends SynchronizableData {
 
     public String getAuthor() {
         return author;
-    }
-
-    public void setAuthor(String author) {
-        this.author = author;
     }
 
     public Boolean getPublic() {
