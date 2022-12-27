@@ -1,9 +1,14 @@
 package pl.edu.pjwstk.langustaserver.model;
 
+import javax.persistence.Id;
+import javax.persistence.MappedSuperclass;
+import javax.persistence.Transient;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
+@MappedSuperclass
 public class SynchronizableData {
+    @Id
     protected UUID id;
     protected LocalDateTime createdAt;
     protected LocalDateTime updatedAt;
@@ -12,6 +17,7 @@ public class SynchronizableData {
      * it can be modified or deleted
      * do not save in database
      */
+    @Transient
     protected Boolean isOwned;
 
     public SynchronizableData() {

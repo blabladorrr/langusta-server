@@ -1,14 +1,20 @@
 package pl.edu.pjwstk.langustaserver.model;
 
+
+import javax.persistence.*;
+
+@Entity
 public class RecipeIngredient {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private long id;
     private String name;
     private Integer quantity;
+    @Enumerated(EnumType.STRING)
     private RecipeIngredientQuantityUnit recipeIngredientQuantityUnit;
 
-    public RecipeIngredient(String name, Integer quantity, RecipeIngredientQuantityUnit recipeIngredientQuantityUnit) {
-        this.name = name;
-        this.quantity = quantity;
-        this.recipeIngredientQuantityUnit = recipeIngredientQuantityUnit;
+    public long getId() {
+        return id;
     }
 
     public String getName() {

@@ -1,5 +1,8 @@
 package pl.edu.pjwstk.langustaserver.model;
 
+import javax.persistence.MappedSuperclass;
+
+@MappedSuperclass
 public class PublishableData extends SynchronizableData {
     protected Boolean isPublic;
     protected String author;

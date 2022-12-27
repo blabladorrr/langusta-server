@@ -1,16 +1,24 @@
 package pl.edu.pjwstk.langustaserver.model;
 
+import javax.persistence.*;
 import java.util.List;
 
+@Entity
 public class Recipe extends PublishableData {
     private String title;
     private String externalSourceUrl;
     private Integer likeCount;
     private Integer rating;
     private Integer calorieCount;
+    @Enumerated(EnumType.STRING)
     private RecipeMealType mealType;
+    @OneToMany
+    @JoinTable(inverseJoinColumns = @JoinColumn(name = "recipe_ingredient_id"))
     private List<RecipeIngredient> ingredients;
+    @OneToOne
     private RecipePreparationTime preparationTime;
+    @OneToMany
+    @JoinTable(inverseJoinColumns = @JoinColumn(name = "recipe_step_id"))
     private List<RecipeStep> steps;
 
     public Recipe(String title, String description, String author,
