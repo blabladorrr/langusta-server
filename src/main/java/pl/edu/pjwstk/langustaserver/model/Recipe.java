@@ -4,7 +4,6 @@ import java.util.List;
 
 public class Recipe extends PublishableData {
     private String title;
-    private Boolean isPublic;
     private String externalSourceUrl;
     private Integer likeCount;
     private Integer rating;
@@ -15,12 +14,11 @@ public class Recipe extends PublishableData {
     private List<RecipeStep> steps;
 
     public Recipe(String title, String description, String author,
-                  Boolean isPublic, String externalSourceUrl, Integer likeCount, Integer rating,
+                  String externalSourceUrl, Integer likeCount, Integer rating,
                   Integer calorieCount, RecipeMealType mealType, List<RecipeIngredient> ingredients,
                   RecipePreparationTime preparationTime, List<RecipeStep> steps) {
         super(author, description);
         this.title = title;
-        this.isPublic = isPublic;
         this.externalSourceUrl = externalSourceUrl;
         this.likeCount = likeCount;
         this.rating = rating;
@@ -37,26 +35,6 @@ public class Recipe extends PublishableData {
 
     public void setTitle(String title) {
         this.title = title;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public String getAuthor() {
-        return author;
-    }
-
-    public Boolean getPublic() {
-        return isPublic;
-    }
-
-    public void setPublic(Boolean isPublic) {
-        isPublic = isPublic;
     }
 
     public String getExternalSourceUrl() {

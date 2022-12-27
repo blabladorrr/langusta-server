@@ -6,7 +6,7 @@ public class PublishableData extends SynchronizableData {
     protected String description;
 
     public PublishableData(String author, String description) {
-        isPublic = false;
+        this.isPublic = false;
         this.author = author;
         this.description = description;
     }
@@ -16,7 +16,7 @@ public class PublishableData extends SynchronizableData {
     }
 
     public void setPublic(Boolean isPublic) {
-        isPublic = isPublic;
+        this.isPublic = isPublic;
     }
 
     public String getAuthor() {
