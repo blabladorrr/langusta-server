@@ -11,7 +11,7 @@ public class RecipeStep {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
     private String description;
-    private int order;
+    private int stepOrder;
 
     public long getId() {
         return id;
@@ -25,11 +25,11 @@ public class RecipeStep {
         this.description = description;
     }
 
-    public int getOrder() {
-        return order;
+    public int getStepOrder() {
+        return stepOrder;
     }
 
-    public void setOrder(int order) {
-        this.order = order;
+    public void setStepOrder(int stepOrder) {
+        this.stepOrder = stepOrder;
     }
 }
