@@ -21,6 +21,8 @@ public class Recipe extends PublishableData {
     @JoinTable(inverseJoinColumns = @JoinColumn(name = "recipe_step_id"))
     private List<RecipeStep> steps;
 
+    public Recipe() {}
+
     public Recipe(String title, String description, String author,
                   String externalSourceUrl, Integer likeCount, Integer rating,
                   Integer calorieCount, RecipeMealType mealType, List<RecipeIngredient> ingredients,

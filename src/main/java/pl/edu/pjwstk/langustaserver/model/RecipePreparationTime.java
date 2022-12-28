@@ -11,6 +11,8 @@ public class RecipePreparationTime {
     @Enumerated(EnumType.STRING)
     private RecipePreparationTimeUnit recipePreparationTimeUnit;
 
+    public RecipePreparationTime() {}
+
     public long getId() {
         return id;
     }

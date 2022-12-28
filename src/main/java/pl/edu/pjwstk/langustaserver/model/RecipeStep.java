@@ -13,6 +13,8 @@ public class RecipeStep {
     private String description;
     private int stepOrder;
 
+    public RecipeStep() {}
+
     public long getId() {
         return id;
     }

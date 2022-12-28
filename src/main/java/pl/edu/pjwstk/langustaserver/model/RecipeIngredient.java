@@ -13,6 +13,8 @@ public class RecipeIngredient {
     @Enumerated(EnumType.STRING)
     private RecipeIngredientQuantityUnit recipeIngredientQuantityUnit;
 
+    public RecipeIngredient() {}
+
     public long getId() {
         return id;
     }
