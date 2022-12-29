@@ -29,11 +29,11 @@ public class User {
         return encoder.matches(password, pwHash);
     }
 
-    public Integer getID() {
+    public Integer getId() {
         return id;
     }
 
-    public void setID(Integer id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
