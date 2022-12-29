@@ -6,7 +6,7 @@ import javax.persistence.*;
 public class RecipePreparationTime {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private Integer id;
     private int value;
     @Enumerated(EnumType.STRING)
     private RecipePreparationTimeUnit recipePreparationTimeUnit;

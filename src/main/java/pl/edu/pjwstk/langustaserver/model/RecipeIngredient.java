@@ -7,7 +7,7 @@ import javax.persistence.*;
 public class RecipeIngredient {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private Integer id;
     private String name;
     private Integer quantity;
     @Enumerated(EnumType.STRING)

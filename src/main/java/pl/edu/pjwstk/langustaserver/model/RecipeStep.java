@@ -9,7 +9,7 @@ import javax.persistence.Id;
 public class RecipeStep {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private Integer id;
     private String description;
     private int stepOrder;
 
