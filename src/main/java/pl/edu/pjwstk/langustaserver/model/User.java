@@ -5,7 +5,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import java.util.List;
 
 public class User {
-    private Integer ID;
+    private Integer id;
     private String email;
     private String username;
     private String pwHash;
@@ -17,8 +17,8 @@ public class User {
     public User() {
     }
 
-    public User(Integer ID, String email, String username, String pwHash, List<UserRoles> roles) {
-        this.ID = ID;
+    public User(Integer id, String email, String username, String pwHash, List<UserRoles> roles) {
+        this.id = id;
         this.email = email;
         this.username = username;
         this.pwHash = encoder.encode(pwHash);
@@ -30,11 +30,11 @@ public class User {
     }
 
     public Integer getID() {
-        return ID;
+        return id;
     }
 
-    public void setID(Integer ID) {
-        this.ID = ID;
+    public void setID(Integer id) {
+        this.id = id;
     }
 
     public String getEmail() {
