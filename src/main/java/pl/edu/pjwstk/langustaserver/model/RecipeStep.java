@@ -1,10 +1,22 @@
 package pl.edu.pjwstk.langustaserver.model;
 
-public class RecipeStep {
-    private String description;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 
-    public RecipeStep(String description) {
-        this.description = description;
+@Entity
+public class RecipeStep {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer id;
+    private String description;
+    private int stepOrder;
+
+    public RecipeStep() {}
+
+    public long getId() {
+        return id;
     }
 
     public String getDescription() {
@@ -13,5 +25,13 @@ public class RecipeStep {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public int getStepOrder() {
+        return stepOrder;
+    }
+
+    public void setStepOrder(int stepOrder) {
+        this.stepOrder = stepOrder;
     }
 }
