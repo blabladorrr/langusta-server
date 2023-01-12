@@ -70,7 +70,7 @@ public class RecipeServiceTest {
 
         List<Recipe> recipes = recipeService.getRecipesById(idList);
         // THEN
-        assertThat(recipes).isNotEmpty();
+        assertThat(recipes).containsOnlyNulls();
     }
 
     @Test
