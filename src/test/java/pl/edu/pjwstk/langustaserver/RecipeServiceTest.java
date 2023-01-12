@@ -2,6 +2,7 @@ package pl.edu.pjwstk.langustaserver;
 
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -28,6 +29,11 @@ public class RecipeServiceTest {
         when(hibernateFactory.unwrap(Mockito.any())).thenReturn(hibernateFactory);
         // Creating new object because of the above issue, @InjectMocks did not work in this case
         recipeService = new RecipeService(recipeRepository, hibernateFactory);
+    }
+
+    @AfterEach
+    public void cleanup() {
+        Mockito.reset(recipeRepository, hibernateFactory, session);
     }
 
     @Mock
