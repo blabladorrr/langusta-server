@@ -5,5 +5,5 @@ import pl.edu.pjwstk.langustaserver.model.User;
 
 public interface UserRepository extends JpaRepository<User, String> {
     User getUserById(String id);
-    void saveUser(User user);
+//    void saveUser(User user);
 }

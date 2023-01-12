@@ -1,21 +1,34 @@
 package pl.edu.pjwstk.langustaserver.model;
 
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.Type;
 
+import javax.persistence.*;
+import java.util.UUID;
+
+@Entity
+@Table(name = "users")
 public class User {
+    @Id
+    @GeneratedValue(generator = "uuid2")
+    @GenericGenerator(
+            name = "uuid2",
+            strategy = "uuid2"
+    )
+    @Type(type = "uuid-char")
     private String id;
+    @Column(nullable = false, unique = true)
     private String email;
+    @Column(nullable = false, unique = true)
     private String username;
+    @Column(nullable = false)
     private String password;
-
-    //TODO Make password encoding a configuration bean used by UserService
-    private static final BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
 
     public User() {
     }
 
-    public User(String id, String email, String username, String password) {
-        this.id = id;
+    public User(String email, String username, String password) {
+        this.id = UUID.randomUUID().toString();
         this.email = email;
         this.username = username;
         this.password = password;
