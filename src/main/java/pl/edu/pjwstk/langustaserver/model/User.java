@@ -2,8 +2,6 @@ package pl.edu.pjwstk.langustaserver.model;
 
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
-import java.util.List;
-
 public class User {
     private String id;
     private String email;
@@ -54,5 +52,4 @@ public class User {
     public void setPassword(String password) {
         this.password = password;
     }
-
 }
