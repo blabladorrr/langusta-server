@@ -1,4 +1,4 @@
-package pl.edu.pjwstk.langustaserver.exceptionhandler;
+package pl.edu.pjwstk.langustaserver.exception;
 
 public class UserNotFoundException extends RuntimeException {
     public UserNotFoundException(String id) {
