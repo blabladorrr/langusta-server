@@ -1,6 +1,7 @@
 package pl.edu.pjwstk.langustaserver.model;
 
 import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
 import java.util.UUID;
@@ -14,7 +15,7 @@ public class User {
             name = "uuid2",
             strategy = "uuid2"
     )
-    @org.hibernate.annotations.Type(type = "uuid-char")
+    @Type(type = "uuid-char")
     private String id;
     @Column(nullable = false, unique = true)
     private String email;
@@ -25,7 +26,7 @@ public class User {
 
     public User() {
     }
-    
+
     public User(String email, String username, String password) {
         this.id = UUID.randomUUID().toString();
         this.email = email;
