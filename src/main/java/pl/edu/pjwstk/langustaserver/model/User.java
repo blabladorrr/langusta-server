@@ -2,14 +2,11 @@ package pl.edu.pjwstk.langustaserver.model;
 
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
-import java.util.List;
-
 public class User {
-    private Integer id;
+    private String id;
     private String email;
     private String username;
-    private String pwHash;
-    private List<UserRoles> roles;
+    private String password;
 
     //TODO Make password encoding a configuration bean used by UserService
     private static final BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
@@ -17,23 +14,18 @@ public class User {
     public User() {
     }
 
-    public User(Integer id, String email, String username, String pwHash, List<UserRoles> roles) {
+    public User(String id, String email, String username, String password) {
         this.id = id;
         this.email = email;
         this.username = username;
-        this.pwHash = encoder.encode(pwHash);
-        this.roles = roles;
+        this.password = password;
     }
 
-    public boolean isPasswordMatching(String password) {
-        return encoder.matches(password, pwHash);
-    }
-
-    public Integer getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(String id) {
         this.id = id;
     }
 
@@ -53,12 +45,11 @@ public class User {
         this.username = username;
     }
 
-    public String getPwHash() {
-        return pwHash;
+    public String getPassword() {
+        return password;
     }
 
-    public void setPwHash(String pwHash) {
-        this.pwHash = pwHash;
+    public void setPassword(String password) {
+        this.password = password;
     }
-
 }
