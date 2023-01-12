@@ -1,6 +1,9 @@
 spring.jpa:
   open-in-view: false
   hibernate.ddl-auto: update
+  properties:
+    hibernate:
+      dialect: org.hibernate.dialect.MySQL8Dialect
 spring.datasource:
   url: ${LANGUSTA_DB_HOST}:${LANGUSTA_DB_PORT}/${LANGUSTA_DB_NAME}
   username: ${LANGUSTA_DB_USERNAME}
