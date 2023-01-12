@@ -12,13 +12,9 @@ public class UserService {
     private final UserRepository userRepository;
     private BCryptPasswordEncoder bCryptPasswordEncoder;
 
-    public UserService(UserRepository userRepository) {
+    public UserService(UserRepository userRepository, BCryptPasswordEncoder bCryptPasswordEncoder) {
         this.userRepository = userRepository;
-    }
-
-    @Bean
-    public BCryptPasswordEncoder bCryptPasswordEncoder() {
-        return new BCryptPasswordEncoder();
+        this.bCryptPasswordEncoder = bCryptPasswordEncoder;
     }
 
     public User getUser(String id) {
@@ -32,6 +28,6 @@ public class UserService {
 
     public User saveUser(User user) {
         user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
-        return userRepository.saveUser(user);
+        return userRepository.save(user);
     }
 }

@@ -16,7 +16,7 @@ public class User {
             strategy = "uuid2"
     )
     @Type(type = "uuid-char")
-    private String id;
+    private UUID id;
     @Column(nullable = false, unique = true)
     private String email;
     @Column(nullable = false, unique = true)
@@ -28,17 +28,17 @@ public class User {
     }
 
     public User(String email, String username, String password) {
-        this.id = UUID.randomUUID().toString();
+//        this.id = UUID.randomUUID().toString();
         this.email = email;
         this.username = username;
         this.password = password;
     }
 
-    public String getId() {
+    public UUID getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(UUID id) {
         this.id = id;
     }
 
