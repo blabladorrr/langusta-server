@@ -7,12 +7,12 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 @SpringBootApplication
 public class LangustaServerApplication {
-	@Bean
-	public BCryptPasswordEncoder bCryptPasswordEncoder() {
-		return new BCryptPasswordEncoder();
-	}
+    @Bean
+    public BCryptPasswordEncoder bCryptPasswordEncoder() {
+        return new BCryptPasswordEncoder();
+    }
 
-	public static void main(String[] args) {
-		SpringApplication.run(LangustaServerApplication.class, args);
-	}
+    public static void main(String[] args) {
+        SpringApplication.run(LangustaServerApplication.class, args);
+    }
 }
