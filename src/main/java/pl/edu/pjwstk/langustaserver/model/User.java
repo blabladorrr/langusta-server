@@ -20,17 +20,17 @@ public class User {
     private String email;
     @Column(nullable = false, unique = true)
     private String username;
-    @Column(nullable=false)
+    @Column(nullable = false)
     private String password;
 
+    public User() {
+    }
+    
     public User(String email, String username, String password) {
         this.id = UUID.randomUUID().toString();
         this.email = email;
         this.username = username;
         this.password = password;
-    }
-
-    public User() {
     }
 
     public String getId() {
