@@ -21,6 +21,6 @@ public class UserRestController {
     @PostMapping("/register")
     public ResponseEntity<User> registerUser(@RequestBody User user) {
         userService.saveUser(user);
-        return new ResponseEntity<>(HttpStatus.CREATED);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 }
