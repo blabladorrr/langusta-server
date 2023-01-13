@@ -19,6 +19,7 @@ public class ExceptionHandlerFilter extends OncePerRequestFilter {
         } catch (UserNotFoundException e) {
             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
             response.getWriter().write("Incorrect username and/or password");
+            response.getWriter().flush();
         } catch (JWTVerificationException e) {
             response.setStatus(HttpServletResponse.SC_FORBIDDEN);
         } catch (RuntimeException e) {

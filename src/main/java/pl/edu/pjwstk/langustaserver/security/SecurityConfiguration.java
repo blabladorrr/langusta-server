@@ -8,6 +8,7 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 import pl.edu.pjwstk.langustaserver.security.filter.AuthenticationFilter;
 import pl.edu.pjwstk.langustaserver.security.filter.ExceptionHandlerFilter;
+import pl.edu.pjwstk.langustaserver.security.filter.JWTAuthorizationFilter;
 import pl.edu.pjwstk.langustaserver.security.manager.CustomAuthenticationManager;
 
 import static pl.edu.pjwstk.langustaserver.security.SecurityConstants.REGISTER_PATH;
@@ -32,6 +33,7 @@ public class SecurityConfiguration {
                 .and()
                 .addFilterBefore(new ExceptionHandlerFilter(), AuthenticationFilter.class)
                 .addFilter(authenticationFilter)
+                .addFilterAfter(new JWTAuthorizationFilter(), AuthenticationFilter.class)
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
         return http.build();
     }
