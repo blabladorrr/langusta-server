@@ -1,5 +1,6 @@
 package pl.edu.pjwstk.langustaserver.security.filter;
 
+import com.auth0.jwt.exceptions.JWTVerificationException;
 import org.springframework.web.filter.OncePerRequestFilter;
 import pl.edu.pjwstk.langustaserver.exception.UserNotFoundException;
 
@@ -16,8 +17,10 @@ public class ExceptionHandlerFilter extends OncePerRequestFilter {
         try {
             filterChain.doFilter(request, response);
         } catch (UserNotFoundException e) {
-            response.setStatus(HttpServletResponse.SC_NOT_FOUND);
+            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
             response.getWriter().write("Incorrect username and/or password");
+        } catch (JWTVerificationException e) {
+            response.setStatus(HttpServletResponse.SC_FORBIDDEN);
         } catch (RuntimeException e) {
             response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
             response.getWriter().write("Bad Request");
