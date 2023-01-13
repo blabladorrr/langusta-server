@@ -1,5 +1,7 @@
 package pl.edu.pjwstk.langustaserver.model;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import javax.persistence.*;
 import java.util.List;
 
@@ -12,16 +14,17 @@ public class Recipe extends PublishableData {
     private Integer calorieCount;
     @Enumerated(EnumType.STRING)
     private RecipeMealType mealType;
-    @OneToMany
-    @JoinTable(inverseJoinColumns = @JoinColumn(name = "recipe_ingredient_id"))
+    @JsonManagedReference
+    @OneToMany(mappedBy = "associatedRecipe", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     private List<RecipeIngredient> ingredients;
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
     private RecipePreparationTime preparationTime;
-    @OneToMany
-    @JoinTable(inverseJoinColumns = @JoinColumn(name = "recipe_step_id"))
+    @JsonManagedReference
+    @OneToMany(mappedBy = "associatedRecipe", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     private List<RecipeStep> steps;
 
-    public Recipe() {}
+    public Recipe() {
+    }
 
     public Recipe(String title, String description, String author,
                   String externalSourceUrl, Integer likeCount, Integer rating,

@@ -8,7 +8,8 @@ public class PublishableData extends SynchronizableData {
     protected String author;
     protected String description;
 
-    public PublishableData() {}
+    public PublishableData() {
+    }
 
     public PublishableData(String author, String description) {
         this.isPublic = false;

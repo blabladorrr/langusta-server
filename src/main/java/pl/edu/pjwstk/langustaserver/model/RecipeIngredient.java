@@ -1,5 +1,6 @@
 package pl.edu.pjwstk.langustaserver.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 
 import javax.persistence.*;
 
@@ -8,15 +9,27 @@ public class RecipeIngredient {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
+    @JsonBackReference
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "recipe_id")
+    private Recipe associatedRecipe;
     private String name;
     private Integer quantity;
     @Enumerated(EnumType.STRING)
-    private RecipeIngredientQuantityUnit recipeIngredientQuantityUnit;
+    private RecipeIngredientQuantityUnit quantityUnit;
 
     public RecipeIngredient() {}
 
-    public long getId() {
+    public Integer getId() {
         return id;
+    }
+
+    public Recipe getAssociatedRecipe() {
+        return associatedRecipe;
+    }
+
+    public void setAssociatedRecipe(Recipe associatedRecipe) {
+        this.associatedRecipe = associatedRecipe;
     }
 
     public String getName() {
@@ -35,11 +48,11 @@ public class RecipeIngredient {
         this.quantity = quantity;
     }
 
-    public RecipeIngredientQuantityUnit getRecipeIngredientQuantityUnit() {
-        return recipeIngredientQuantityUnit;
+    public RecipeIngredientQuantityUnit getQuantityUnit() {
+        return quantityUnit;
     }
 
-    public void setRecipeIngredientQuantityUnit(RecipeIngredientQuantityUnit recipeIngredientQuantityUnit) {
-        this.recipeIngredientQuantityUnit = recipeIngredientQuantityUnit;
+    public void setQuantityUnit(RecipeIngredientQuantityUnit quantityUnit) {
+        this.quantityUnit = quantityUnit;
     }
 }

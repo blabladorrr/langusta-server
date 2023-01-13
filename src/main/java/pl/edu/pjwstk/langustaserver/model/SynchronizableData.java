@@ -4,12 +4,11 @@ import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
 import javax.persistence.Transient;
 import java.time.LocalDateTime;
-import java.util.UUID;
 
 @MappedSuperclass
 public class SynchronizableData {
     @Id
-    protected UUID id;
+    protected String id;
     protected LocalDateTime createdAt;
     protected LocalDateTime updatedAt;
     /**
@@ -21,11 +20,10 @@ public class SynchronizableData {
     protected Boolean isOwned;
 
     public SynchronizableData() {
-        id = UUID.randomUUID();
         createdAt = LocalDateTime.now();
     }
 
-    public UUID getId() {
+    public String getId() {
         return id;
     }
 

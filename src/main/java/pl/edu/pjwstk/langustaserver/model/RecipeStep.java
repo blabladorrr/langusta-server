@@ -1,22 +1,33 @@
 package pl.edu.pjwstk.langustaserver.model;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
+import javax.persistence.*;
 
 @Entity
 public class RecipeStep {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
+    @JsonBackReference
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "recipe_id")
+    private Recipe associatedRecipe;
     private String description;
     private int stepOrder;
 
     public RecipeStep() {}
 
-    public long getId() {
+    public Integer getId() {
         return id;
+    }
+
+    public Recipe getAssociatedRecipe() {
+        return associatedRecipe;
+    }
+
+    public void setAssociatedRecipe(Recipe associatedRecipe) {
+        this.associatedRecipe = associatedRecipe;
     }
 
     public String getDescription() {
