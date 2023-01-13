@@ -9,10 +9,10 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/recipes")
-public class LangustaServerRestController {
+public class RecipeController {
     private final RecipeService recipeService;
 
-    public LangustaServerRestController(RecipeService recipeService) {
+    public RecipeController(RecipeService recipeService) {
         this.recipeService = recipeService;
     }
 
