@@ -16,7 +16,7 @@ public class RecipeController {
         this.recipeService = recipeService;
     }
 
-    @PostMapping("/get")
+    @PostMapping("/get/by-id")
     public ResponseEntity<List<Recipe>> getRecipesById(@RequestBody List<String> idList) {
         return ResponseEntity.ok(recipeService.getRecipesById(idList));
     }
