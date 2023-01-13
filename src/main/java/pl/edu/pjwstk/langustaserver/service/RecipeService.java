@@ -52,4 +52,14 @@ public class RecipeService {
 
         return recipesToSave;
     }
+
+    public void deleteRecipes(List<String> idList) {
+        idList.forEach(id -> deleteRecipeIfExists(id));
+    }
+
+    private void deleteRecipeIfExists(String id) {
+        if (recipeRepository.existsById(id)) {
+            recipeRepository.deleteById(id);
+        }
+    }
 }

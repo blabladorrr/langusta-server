@@ -25,4 +25,11 @@ public class LangustaServerRestController {
     public ResponseEntity<List<Recipe>> saveRecipes(@RequestBody List<Recipe> recipesToSave) {
         return ResponseEntity.ok(recipeService.saveRecipes(recipesToSave));
     }
+
+    @DeleteMapping("/delete")
+    public ResponseEntity<Void> deleteRecipes(@RequestBody List<String> idList) {
+        recipeService.deleteRecipes(idList);
+
+        return ResponseEntity.noContent().build();
+    }
 }
