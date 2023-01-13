@@ -11,7 +11,7 @@ import pl.edu.pjwstk.langustaserver.security.filter.ExceptionHandlerFilter;
 import pl.edu.pjwstk.langustaserver.security.filter.JWTAuthorizationFilter;
 import pl.edu.pjwstk.langustaserver.security.manager.CustomAuthenticationManager;
 
-import static pl.edu.pjwstk.langustaserver.security.SecurityConstants.REGISTER_PATH;
+import static pl.edu.pjwstk.langustaserver.security.SecurityConstants.*;
 
 @Configuration
 public class SecurityConfiguration {
@@ -29,6 +29,8 @@ public class SecurityConfiguration {
                 .csrf().disable()
                 .authorizeHttpRequests()
                 .antMatchers(HttpMethod.POST, REGISTER_PATH).permitAll()
+                .antMatchers(HttpMethod.POST, RECIPES_GET_BY_ID).permitAll()
+                .antMatchers(HttpMethod.POST, RECIPES_GET_PUBLIC).permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .addFilterBefore(new ExceptionHandlerFilter(), AuthenticationFilter.class)
