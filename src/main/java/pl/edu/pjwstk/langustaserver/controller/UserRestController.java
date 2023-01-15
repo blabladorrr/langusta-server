@@ -10,7 +10,7 @@ import pl.edu.pjwstk.langustaserver.model.User;
 import pl.edu.pjwstk.langustaserver.service.UserService;
 
 @RestController
-@RequestMapping("/auth")
+@RequestMapping("/api/auth")
 public class UserRestController {
     private final UserService userService;
 

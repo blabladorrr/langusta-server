@@ -17,7 +17,8 @@ import java.io.IOException;
 import java.util.Date;
 
 import static com.auth0.jwt.algorithms.Algorithm.HMAC512;
-import static pl.edu.pjwstk.langustaserver.security.SecurityConstants.*;
+import static pl.edu.pjwstk.langustaserver.security.SecurityConstants.SECRET_KEY;
+import static pl.edu.pjwstk.langustaserver.security.SecurityConstants.TOKEN_EXPIRATION;
 
 public class AuthenticationFilter extends UsernamePasswordAuthenticationFilter {
     private CustomAuthenticationManager customAuthenticationManager;
@@ -55,6 +56,10 @@ public class AuthenticationFilter extends UsernamePasswordAuthenticationFilter {
                 .withSubject(authResult.getName())
                 .withExpiresAt(new Date(System.currentTimeMillis() + TOKEN_EXPIRATION))
                 .sign(HMAC512(SECRET_KEY));
-        response.addHeader(AUTHORIZATION, BEARER + token);
+//        response.addHeader(AUTHORIZATION, BEARER + token);
+        response.setContentType("application/json");
+        response.setCharacterEncoding("UTF-8");
+        response.getWriter().write("{\"token\": \"" + token + "\"}");
+        response.getWriter().flush();
     }
 }
