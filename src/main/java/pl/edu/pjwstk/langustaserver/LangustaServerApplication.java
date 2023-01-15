@@ -5,7 +5,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
 public class LangustaServerApplication {
-    public static void main(String[] args) {
-        SpringApplication.run(LangustaServerApplication.class, args);
-    }
+	public static void main(String[] args) {
+		SpringApplication.run(LangustaServerApplication.class, args);
+	}
 }
