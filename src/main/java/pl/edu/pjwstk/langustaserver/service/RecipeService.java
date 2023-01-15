@@ -53,13 +53,19 @@ public class RecipeService {
         return recipesToSave;
     }
 
-    public void deleteRecipes(List<String> idList) {
-        idList.forEach(id -> deleteRecipeIfExists(id));
+    public List<String> deleteRecipes(List<String> idList) {
+        List<String> deletedRecipeIds = new ArrayList<>();
+
+        idList.forEach(id -> deleteRecipeIfExists(id, deletedRecipeIds));
+
+        return deletedRecipeIds;
     }
 
-    private void deleteRecipeIfExists(String id) {
+    private void deleteRecipeIfExists(String id, List<String> deletedRecipeIds) {
         if (recipeRepository.existsById(id)) {
             recipeRepository.deleteById(id);
+
+            deletedRecipeIds.add(id);
         }
     }
 }

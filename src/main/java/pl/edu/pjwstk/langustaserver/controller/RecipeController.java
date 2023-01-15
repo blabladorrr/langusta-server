@@ -27,9 +27,7 @@ public class RecipeController {
     }
 
     @DeleteMapping("/delete")
-    public ResponseEntity<Void> deleteRecipes(@RequestBody List<String> idList) {
-        recipeService.deleteRecipes(idList);
-
-        return ResponseEntity.noContent().build();
+    public ResponseEntity<List<String>> deleteRecipes(@RequestBody List<String> idList) {
+        return ResponseEntity.ok(recipeService.deleteRecipes(idList));
     }
 }
