@@ -9,11 +9,12 @@ public class RecipePreparationTime {
     private Integer id;
     private int value;
     @Enumerated(EnumType.STRING)
-    private RecipePreparationTimeUnit recipePreparationTimeUnit;
+    private RecipePreparationTimeUnit unit;
 
-    public RecipePreparationTime() {}
+    public RecipePreparationTime() {
+    }
 
-    public long getId() {
+    public Integer getId() {
         return id;
     }
 
@@ -25,11 +26,11 @@ public class RecipePreparationTime {
         this.value = value;
     }
 
-    public RecipePreparationTimeUnit getRecipePreparationTimeUnit() {
-        return recipePreparationTimeUnit;
+    public RecipePreparationTimeUnit getUnit() {
+        return unit;
     }
 
-    public void setRecipePreparationTimeUnit(RecipePreparationTimeUnit recipePreparationTimeUnit) {
-        this.recipePreparationTimeUnit = recipePreparationTimeUnit;
+    public void setUnit(RecipePreparationTimeUnit unit) {
+        this.unit = unit;
     }
 }
