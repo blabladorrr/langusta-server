@@ -6,6 +6,7 @@ import javax.persistence.*;
 import java.util.List;
 
 @Entity
+@Table(name = "recipes")
 public class Recipe extends PublishableData {
     private String title;
     private String externalSourceUrl;
