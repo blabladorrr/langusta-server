@@ -6,6 +6,7 @@ import pl.edu.pjwstk.langustaserver.model.Recipe;
 import pl.edu.pjwstk.langustaserver.service.RecipeService;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/recipes")
@@ -19,6 +20,11 @@ public class RecipeController {
     @PostMapping("/get/by-id")
     public ResponseEntity<List<Recipe>> getRecipesById(@RequestBody List<String> idList) {
         return ResponseEntity.ok(recipeService.getRecipesById(idList));
+    }
+
+    @PostMapping("/get/public")
+    public ResponseEntity<List<Recipe>> getPublicRecipes(@RequestBody Map<String, String> filters) {
+        return ResponseEntity.ok(recipeService.getPublicRecipes(filters));
     }
 
     @PutMapping("/save")

@@ -10,11 +10,14 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.mockito.junit.jupiter.MockitoExtension;
+import pl.edu.pjwstk.langustaserver.component.PublicRecipeProcessor;
 import pl.edu.pjwstk.langustaserver.model.Recipe;
 import pl.edu.pjwstk.langustaserver.repository.RecipeRepository;
 import pl.edu.pjwstk.langustaserver.service.RecipeService;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.*;
@@ -26,8 +29,10 @@ public class RecipeServiceTest {
         MockitoAnnotations.openMocks(this);
         // Mocking service constructor behavior because hibernateFactory is null
         when(hibernateFactory.unwrap(Mockito.any())).thenReturn(hibernateFactory);
+        // Mocking other hibernateFactory common called method behaviors
+        when(hibernateFactory.openSession()).thenReturn(session);
         // Creating new object because of the above issue, @InjectMocks did not work in this case
-        recipeService = new RecipeService(recipeRepository, hibernateFactory);
+        recipeService = new RecipeService(recipeRepository, hibernateFactory, publicRecipeProcessor);
     }
 
     @AfterEach
@@ -42,6 +47,9 @@ public class RecipeServiceTest {
     private static SessionFactory hibernateFactory;
 
     @Mock
+    private PublicRecipeProcessor publicRecipeProcessor;
+
+    @Mock
     private Session session;
 
     private RecipeService recipeService;
@@ -51,7 +59,6 @@ public class RecipeServiceTest {
         // GIVEN
         List<String> idList = List.of("f8c3de3d-1fea-4d7c-a8b0-29f63c4c3454", "5bd8faa3-e052-44d1-822b-4b3c2b477f8e");
         // WHEN
-        when(hibernateFactory.openSession()).thenReturn(session);
         when(session.find(Mockito.any(), Mockito.any())).thenReturn(new Recipe());
 
         List<Recipe> recipes = recipeService.getRecipesById(idList);
@@ -64,7 +71,6 @@ public class RecipeServiceTest {
         // GIVEN
         List<String> idList = List.of("invalid_id_1", "invalid_id_2");
         // WHEN
-        when(hibernateFactory.openSession()).thenReturn(session);
         when(session.find(Mockito.any(), Mockito.any())).thenReturn(null);
 
         List<Recipe> recipes = recipeService.getRecipesById(idList);
@@ -111,5 +117,26 @@ public class RecipeServiceTest {
         recipeService.deleteRecipes(idList);
         // THEN
         verify(recipeRepository, times(1)).deleteById("5bd8faa3-e052-44d1-822b-4b3c2b477f8e");
+    }
+
+    @Test
+    void givenEmptyFilters_whenGetPublicRecipes_thenPublicRecipesWithoutFiltersShouldBeCalled() {
+        // GIVEN
+        Map<String, String> filters = new HashMap<>();
+        // WHEN
+        recipeService.getPublicRecipes(filters);
+        // THEN
+        verify(publicRecipeProcessor, times(1)).findAllPublicRecipes(session);
+    }
+
+    @Test
+    void givenFilledFilters_whenGetPublicRecipes_thenPublicRecipesWithFiltersShouldBeCalled() {
+        // GIVEN
+        Map<String, String> filters = new HashMap<>();
+        filters.put("search", "Burrito");
+        // WHEN
+        recipeService.getPublicRecipes(filters);
+        // THEN
+        verify(publicRecipeProcessor, times(1)).findAllPublicRecipesWithFilters(session, filters);
     }
 }
