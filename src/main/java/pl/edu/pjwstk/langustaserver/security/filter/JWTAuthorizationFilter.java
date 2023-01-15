@@ -21,16 +21,19 @@ public class JWTAuthorizationFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
             throws ServletException, IOException {
         String header = request.getHeader(AUTHORIZATION);
+
         if (header == null || !header.startsWith(BEARER)) {
             filterChain.doFilter(request, response);
             return;
         }
+
         String token = header.replace(BEARER, "");
         String user = JWT.require(HMAC512(SECRET_KEY))
                 .build()
                 .verify(token)
                 .getSubject();
         Authentication authentication = new UsernamePasswordAuthenticationToken(user, null, Arrays.asList());
+
         SecurityContextHolder.getContext().setAuthentication(authentication);
         filterChain.doFilter(request, response);
     }

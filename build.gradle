@@ -17,12 +17,12 @@ dependencies {
 	implementation("org.springframework.boot:spring-boot-starter-data-jpa")
 	implementation("mysql:mysql-connector-java")
 	implementation("org.springframework.boot:spring-boot-starter-security")
-	testImplementation("org.springframework.boot:spring-boot-starter-security")
 	implementation("com.fasterxml.jackson.datatype:jackson-datatype-jsr310")
+	implementation("com.auth0:java-jwt:4.2.2")
 	testImplementation("org.springframework.boot:spring-boot-starter-test")
+	testImplementation("org.springframework.boot:spring-boot-starter-security")
 	testImplementation("org.testng:testng:7.7.0")
 	testImplementation("junit:junit:4.13.2")
-	implementation("com.auth0:java-jwt:4.2.2")
 	testImplementation("com.auth0:java-jwt:4.2.2")
 }
 

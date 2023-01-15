@@ -35,7 +35,10 @@ public class UserService {
     }
 
     static User unwrapUser(Optional<User> user, UUID id) {
-        if (user.isPresent()) return user.get();
-        else throw new UserNotFoundException(id);
+        if (user.isPresent()) {
+            return user.get();
+        } else {
+            throw new UserNotFoundException(id);
+        }
     }
 }
