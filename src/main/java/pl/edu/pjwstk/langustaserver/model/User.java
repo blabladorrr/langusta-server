@@ -16,29 +16,34 @@ public class User {
             strategy = "uuid2"
     )
     @Type(type = "uuid-char")
-    private String id;
+    private UUID id;
     @Column(nullable = false, unique = true)
     private String email;
     @Column(nullable = false, unique = true)
     private String username;
+    @Column
+    private String firstname;
+    @Column
+    private String lastname;
     @Column(nullable = false)
     private String password;
 
     public User() {
     }
 
-    public User(String email, String username, String password) {
-        this.id = UUID.randomUUID().toString();
+    public User(String email, String username, String firstname, String lastname, String password) {
         this.email = email;
         this.username = username;
+        this.firstname = firstname;
+        this.lastname = lastname;
         this.password = password;
     }
 
-    public String getId() {
+    public UUID getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(UUID id) {
         this.id = id;
     }
 
@@ -56,6 +61,22 @@ public class User {
 
     public void setUsername(String username) {
         this.username = username;
+    }
+
+    public String getFirstname() {
+        return firstname;
+    }
+
+    public void setFirstname(String firstname) {
+        this.firstname = firstname;
+    }
+
+    public String getLastname() {
+        return lastname;
+    }
+
+    public void setLastname(String lastname) {
+        this.lastname = lastname;
     }
 
     public String getPassword() {
