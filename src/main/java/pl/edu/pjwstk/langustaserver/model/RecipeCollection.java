@@ -1,22 +1,20 @@
 package pl.edu.pjwstk.langustaserver.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import org.hibernate.annotations.GenericGenerator;
-import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
 import java.util.List;
 import java.util.UUID;
 
 @Entity
-@Table(name = "collection")
+@Table(name = "collections")
 public class RecipeCollection extends PublishableData {
     @Column(nullable = false)
     private String title;
     @JsonIgnore
     @ManyToMany
     @JoinTable(
-            name = "recipe_collection",
+            name = "recipe_collections",
             joinColumns = @JoinColumn(name = "collection_id", referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(name = "recipe_id", referencedColumnName = "id")
     )

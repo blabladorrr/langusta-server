@@ -16,7 +16,8 @@ public class RecipeCollectionService {
     private final RecipeCollectionRepository recipeCollectionRepository;
     private final SessionFactory hibernateFactory;
 
-    public RecipeCollectionService(RecipeCollectionRepository recipeCollectionRepository, SessionFactory hibernateFactory) {
+    public RecipeCollectionService(RecipeCollectionRepository recipeCollectionRepository,
+                                   SessionFactory hibernateFactory) {
         this.recipeCollectionRepository = recipeCollectionRepository;
 
         if (hibernateFactory.unwrap(SessionFactory.class) == null) {
