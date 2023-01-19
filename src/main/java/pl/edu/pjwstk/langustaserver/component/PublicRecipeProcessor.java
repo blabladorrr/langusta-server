@@ -22,10 +22,6 @@ public class PublicRecipeProcessor {
     public PublicRecipeProcessor() {
     }
 
-    private void setFilters(Map<String, String> filters) {
-        this.filters = filters;
-    }
-
     public List<Recipe> findAllPublicRecipes(Session session) {
         NativeQuery nativeQuery = session.createNativeQuery(FIND_ALL_PUBLIC_RECIPES_QUERY, Recipe.class);
 
@@ -112,5 +108,9 @@ public class PublicRecipeProcessor {
     private void getAssociatedRecipeData(Recipe recipe) {
         Hibernate.initialize(recipe.getIngredients());
         Hibernate.initialize(recipe.getSteps());
+    }
+
+    private void setFilters(Map<String, String> filters) {
+        this.filters = filters;
     }
 }
