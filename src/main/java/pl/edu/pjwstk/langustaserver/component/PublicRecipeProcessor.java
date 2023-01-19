@@ -67,14 +67,15 @@ public class PublicRecipeProcessor {
     private void addFilterValueToWhereStatementToBeParametrizedIfKeyIsSafe(StringBuilder whereStatement, String key) {
         // Appending whereStatement only by known and safe keys
         switch (key) {
-            case "search":
-                String searchValue = filters.remove(key);
-                // Title
-                filters.put("title", searchValue);
-                whereStatement.append(addFilterKeyAndValueToWhereStatementToBeParametrized("title"));
-
-                break;
+            case "search" -> mapSearchFilterKeyToColumnNames(whereStatement);
         }
+    }
+
+    private void mapSearchFilterKeyToColumnNames(StringBuilder whereStatement) {
+        String searchValue = filters.remove("search");
+        // Title
+        filters.put("title", searchValue);
+        whereStatement.append(addFilterKeyAndValueToWhereStatementToBeParametrized("title"));
     }
 
     private String addFilterKeyAndValueToWhereStatementToBeParametrized(String key) {
