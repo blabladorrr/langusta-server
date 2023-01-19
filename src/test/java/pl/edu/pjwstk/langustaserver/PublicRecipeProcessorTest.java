@@ -2,6 +2,7 @@ package pl.edu.pjwstk.langustaserver;
 
 import org.hibernate.Session;
 import org.hibernate.query.NativeQuery;
+import org.hibernate.query.ParameterMetadata;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -28,11 +29,12 @@ public class PublicRecipeProcessorTest {
         // Mocking common called method behaviors
         when(session.createNativeQuery(any(), any(Class.class))).thenReturn(nativeQuery);
         when(nativeQuery.getResultList()).thenReturn(List.of(recipe));
+        when(nativeQuery.getParameterMetadata()).thenReturn(parameterMetadata);
     }
 
     @AfterEach
     public void cleanup() {
-        Mockito.reset(session, nativeQuery);
+        Mockito.reset(session, nativeQuery, parameterMetadata);
     }
 
     private PublicRecipeProcessor publicRecipeProcessor = new PublicRecipeProcessor();
@@ -42,6 +44,9 @@ public class PublicRecipeProcessorTest {
 
     @Mock
     private NativeQuery nativeQuery;
+
+    @Mock
+    private ParameterMetadata parameterMetadata;
 
     private Recipe recipe = new Recipe();
 
@@ -76,9 +81,9 @@ public class PublicRecipeProcessorTest {
     }
 
     @Test
-    void givenFilters_whenFindAllPublicRecipesWithFilters_thenQueryWithoutFiltersShouldBePerformed() {
+    void givenOnlySearchFilter_whenFindAllPublicRecipesWithFilters_thenQueryWithSearchFiltersShouldBePerformed() {
         String sqlQuery =
-                "SELECT * FROM recipes WHERE is_public = 1 AND LOWER(title) LIKE CONCAT('%', LOWER('Burrito'), '%')";
+                "SELECT * FROM recipes WHERE is_public = 1 AND LOWER(title) LIKE CONCAT('%', LOWER(:title), '%')";
         // GIVEN
         Map<String, String> filters = new HashMap<>();
         filters.put("search", "Burrito");
