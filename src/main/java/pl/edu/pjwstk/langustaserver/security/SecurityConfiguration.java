@@ -29,7 +29,7 @@ public class SecurityConfiguration {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         AuthenticationFilter authenticationFilter = new AuthenticationFilter(customAuthenticationManager);
-        authenticationFilter.setFilterProcessesUrl("/api/auth/login");
+        authenticationFilter.setFilterProcessesUrl("/auth/login");
         http
                 .cors()
                 .and()
@@ -71,7 +71,7 @@ public class SecurityConfiguration {
     CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
 
-        configuration.setAllowedOrigins(Arrays.asList("http://127.0.0.1:3333", "http://localhost:3333"));
+        configuration.setAllowedOrigins(Arrays.asList("https://pjatk-langusta-dev.netlify.app", "http://127.0.0.1:3333", "http://localhost:3333"));
         configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PATCH", "PUT", "DELETE", "OPTIONS", "HEAD"));
         configuration.setAllowCredentials(true);
         configuration.setAllowedHeaders(Arrays.asList(
