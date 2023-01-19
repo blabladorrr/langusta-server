@@ -1,14 +1,25 @@
 package pl.edu.pjwstk.langustaserver.model;
 
+import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.Type;
+
+import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
 import javax.persistence.Transient;
 import java.time.LocalDateTime;
+import java.util.UUID;
 
 @MappedSuperclass
 public class SynchronizableData {
     @Id
-    protected String id;
+    @GeneratedValue(generator = "uuid2")
+    @GenericGenerator(
+            name = "uuid2",
+            strategy = "uuid2"
+    )
+    @Type(type = "uuid-char")
+    protected UUID id;
     protected LocalDateTime createdAt;
     protected LocalDateTime updatedAt;
     /**
@@ -23,8 +34,12 @@ public class SynchronizableData {
         createdAt = LocalDateTime.now();
     }
 
-    public String getId() {
+    public UUID getId() {
         return id;
+    }
+
+    public void setId() {
+        this.id = id;
     }
 
     public LocalDateTime getCreatedAt() {
