@@ -37,7 +37,8 @@ public class UserService {
     static User unwrapUser(Optional<User> user, UUID id) {
         if (user.isPresent()) {
             return user.get();
-        } else {
+        }
+        else {
             throw new UserNotFoundException(id);
         }
     }

@@ -6,7 +6,6 @@ import org.hibernate.SessionFactory;
 import org.hibernate.query.NativeQuery;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
-import pl.edu.pjwstk.langustaserver.component.PublicDataProcessor;
 import pl.edu.pjwstk.langustaserver.component.PublicRecipeFetcher;
 import pl.edu.pjwstk.langustaserver.exception.UserNotFoundException;
 import pl.edu.pjwstk.langustaserver.model.Recipe;
