@@ -13,11 +13,6 @@ import java.util.UUID;
 @MappedSuperclass
 public class SynchronizableData {
     @Id
-    @GeneratedValue(generator = "uuid2")
-    @GenericGenerator(
-            name = "uuid2",
-            strategy = "uuid2"
-    )
     @Type(type = "uuid-char")
     protected UUID id;
     // TODO: Change date types in SynchronizableData back to LocalDateTime /ticket 37

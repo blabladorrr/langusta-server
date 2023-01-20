@@ -12,16 +12,15 @@ public class PublishableData extends SynchronizableData {
     }
 
     public PublishableData(String author, String description) {
-        this.isPublic = false;
         this.author = author;
         this.description = description;
     }
 
-    public Boolean getPublic() {
+    public Boolean getIsPublic() {
         return isPublic;
     }
 
-    public void setPublic(Boolean isPublic) {
+    public void setIsPublic(Boolean isPublic) {
         this.isPublic = isPublic;
     }
 

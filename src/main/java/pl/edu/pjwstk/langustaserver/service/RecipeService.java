@@ -82,7 +82,7 @@ public class RecipeService {
     private Recipe fetchRecipeById(String id) {
         Session session = hibernateFactory.openSession();
 
-        Recipe foundRecipe = (Recipe) session.find(Recipe.class, id);
+        Recipe foundRecipe = (Recipe) session.find(Recipe.class, UUID.fromString(id));
 
         if (foundRecipe != null) {
             Hibernate.initialize(foundRecipe.getIngredients());
@@ -111,16 +111,16 @@ public class RecipeService {
     public List<String> deleteRecipes(List<String> idList) {
         List<String> deletedRecipeIds = new ArrayList<>();
 
-        idList.forEach(id -> deleteRecipeIfExists(id, deletedRecipeIds));
+        idList.forEach(id -> deleteRecipeIfExists(UUID.fromString(id), deletedRecipeIds));
 
         return deletedRecipeIds;
     }
 
-    private void deleteRecipeIfExists(String id, List<String> deletedRecipeIds) {
+    private void deleteRecipeIfExists(UUID id, List<String> deletedRecipeIds) {
         if (recipeRepository.existsById(id)) {
             recipeRepository.deleteById(id);
 
-            deletedRecipeIds.add(id);
+            deletedRecipeIds.add(id.toString());
         }
     }
 
