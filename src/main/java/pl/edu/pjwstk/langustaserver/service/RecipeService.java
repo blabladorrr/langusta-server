@@ -6,7 +6,8 @@ import org.hibernate.SessionFactory;
 import org.hibernate.query.NativeQuery;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
-import pl.edu.pjwstk.langustaserver.component.PublicRecipeProcessor;
+import pl.edu.pjwstk.langustaserver.component.PublicDataProcessor;
+import pl.edu.pjwstk.langustaserver.component.PublicRecipeFetcher;
 import pl.edu.pjwstk.langustaserver.exception.UserNotFoundException;
 import pl.edu.pjwstk.langustaserver.model.Recipe;
 import pl.edu.pjwstk.langustaserver.model.User;
@@ -20,13 +21,13 @@ public class RecipeService {
     private final RecipeRepository recipeRepository;
     private final UserRepository userRepository;
     private final SessionFactory hibernateFactory;
-    private final PublicRecipeProcessor publicRecipeProcessor;
+    private final PublicRecipeFetcher publicRecipeFetcher;
 
     public RecipeService(
             RecipeRepository recipeRepository,
             UserRepository userRepository,
             SessionFactory hibernateFactory,
-            PublicRecipeProcessor publicRecipeProcessor
+            PublicRecipeFetcher publicRecipeFetcher
     ) {
         this.recipeRepository = recipeRepository;
         this.userRepository = userRepository;
@@ -36,7 +37,7 @@ public class RecipeService {
         }
         this.hibernateFactory = hibernateFactory.unwrap(SessionFactory.class);
 
-        this.publicRecipeProcessor = publicRecipeProcessor;
+        this.publicRecipeFetcher = publicRecipeFetcher;
     }
 
     public List<Recipe> getUserRecipes() {
@@ -94,15 +95,37 @@ public class RecipeService {
         return foundRecipe;
     }
 
+    public List<Recipe> getPublicRecipes(Map<String, String> filters) {
+        List<Recipe> foundRecipes = findPublicRecipesAccordingToFilters(filters);
+
+        return foundRecipes;
+    }
+
+    private List<Recipe> findPublicRecipesAccordingToFilters(Map<String, String> filters) {
+        List<Recipe> foundRecipes;
+        Session session = hibernateFactory.openSession();
+
+        if (filters.isEmpty()) {
+            foundRecipes = publicRecipeFetcher.findAllPublicRecipes(session);
+        }
+        else {
+            foundRecipes = publicRecipeFetcher.findAllPublicRecipesWithFilters(session, filters);
+        }
+
+        session.close();
+
+        return foundRecipes;
+    }
+
     public List<Recipe> saveRecipes(List<Recipe> recipesToSave) {
-        recipesToSave.forEach(recipe -> setAuthorForRecipesIfEmpty(recipe));
+        recipesToSave.forEach(recipe -> setAuthorForRecipeIfEmpty(recipe));
 
         recipeRepository.saveAll(recipesToSave);
 
         return recipesToSave;
     }
 
-    private void setAuthorForRecipesIfEmpty(Recipe recipe) {
+    private void setAuthorForRecipeIfEmpty(Recipe recipe) {
         if (recipe.getAuthor() == null) {
             recipe.setAuthor(getCurrentUserId().toString());
         }
@@ -122,28 +145,6 @@ public class RecipeService {
 
             deletedRecipeIds.add(id.toString());
         }
-    }
-
-    public List<Recipe> getPublicRecipes(Map<String, String> filters) {
-        List<Recipe> foundRecipes = findPublicRecipesAccordingToFilters(filters);
-
-        return foundRecipes;
-    }
-
-    private List<Recipe> findPublicRecipesAccordingToFilters(Map<String, String> filters) {
-        List<Recipe> foundRecipes;
-        Session session = hibernateFactory.openSession();
-
-        if (filters.isEmpty()) {
-            foundRecipes = publicRecipeProcessor.findAllPublicRecipes(session);
-        }
-        else {
-            foundRecipes = publicRecipeProcessor.findAllPublicRecipesWithFilters(session, filters);
-        }
-
-        session.close();
-
-        return foundRecipes;
     }
 
     private UUID getCurrentUserId() {

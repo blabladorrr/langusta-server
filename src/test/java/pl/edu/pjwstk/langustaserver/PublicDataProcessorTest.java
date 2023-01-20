@@ -11,7 +11,7 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.mockito.junit.jupiter.MockitoExtension;
-import pl.edu.pjwstk.langustaserver.component.PublicRecipeProcessor;
+import pl.edu.pjwstk.langustaserver.component.PublicRecipeFetcher;
 import pl.edu.pjwstk.langustaserver.model.Recipe;
 
 import java.util.HashMap;
@@ -22,7 +22,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
-public class PublicRecipeProcessorTest {
+public class PublicDataProcessorTest {
     @BeforeEach
     public void setup() {
         MockitoAnnotations.openMocks(this);
@@ -37,7 +37,7 @@ public class PublicRecipeProcessorTest {
         Mockito.reset(session, nativeQuery, parameterMetadata);
     }
 
-    private PublicRecipeProcessor publicRecipeProcessor = new PublicRecipeProcessor();
+    private PublicRecipeFetcher publicRecipeFetcher = new PublicRecipeFetcher();
 
     @Mock
     private Session session;
@@ -55,7 +55,7 @@ public class PublicRecipeProcessorTest {
         // GIVEN
         Map<String, String> filters = new HashMap<>();
         // WHEN
-        List<Recipe> recipeList = publicRecipeProcessor.findAllPublicRecipes(session);
+        List<Recipe> recipeList = publicRecipeFetcher.findAllPublicRecipes(session);
         // THEN
         assertThat(recipeList).isNotEmpty().hasSize(1).contains(recipe);
     }
@@ -66,7 +66,7 @@ public class PublicRecipeProcessorTest {
         Map<String, String> filters = new HashMap<>();
         filters.put("search", "Burrito");
         // WHEN
-        List<Recipe> recipeList = publicRecipeProcessor.findAllPublicRecipesWithFilters(session, filters);
+        List<Recipe> recipeList = publicRecipeFetcher.findAllPublicRecipesWithFilters(session, filters);
         // THEN
         assertThat(recipeList).isNotEmpty().hasSize(1).contains(recipe);
     }
@@ -75,7 +75,7 @@ public class PublicRecipeProcessorTest {
     void whenFindAllPublicRecipes_thenQueryWithoutFiltersShouldBePerformed() {
         String sqlQuery = "SELECT * FROM recipes WHERE is_public = 1";
         // WHEN
-        publicRecipeProcessor.findAllPublicRecipes(session);
+        publicRecipeFetcher.findAllPublicRecipes(session);
         // THEN
         verify(session, times(1)).createNativeQuery(sqlQuery, Recipe.class);
     }
@@ -88,7 +88,7 @@ public class PublicRecipeProcessorTest {
         Map<String, String> filters = new HashMap<>();
         filters.put("search", "Burrito");
         // WHEN
-        publicRecipeProcessor.findAllPublicRecipesWithFilters(session, filters);
+        publicRecipeFetcher.findAllPublicRecipesWithFilters(session, filters);
         // THEN
         verify(session, times(1)).createNativeQuery(sqlQuery, Recipe.class);
     }
