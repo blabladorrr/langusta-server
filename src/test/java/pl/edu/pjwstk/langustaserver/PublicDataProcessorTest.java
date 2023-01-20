@@ -18,6 +18,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static org.assertj.core.api.Assertions.as;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.*;
 
@@ -57,6 +58,7 @@ public class PublicDataProcessorTest {
         // WHEN
         List<Recipe> recipeList = publicRecipeFetcher.findAllPublicRecipes(session);
         // THEN
+        assertThat(filters).isEmpty();
         assertThat(recipeList).isNotEmpty().hasSize(1).contains(recipe);
     }
 
