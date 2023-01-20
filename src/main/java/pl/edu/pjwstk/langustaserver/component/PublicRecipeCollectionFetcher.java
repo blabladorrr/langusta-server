@@ -16,14 +16,15 @@ public class PublicRecipeCollectionFetcher extends PublicDataProcessor {
     private static final String FIND_ALL_PUBLIC_RECIPE_COLLECTIONS_WITH_FILTERS_QUERY =
             "SELECT * FROM collections WHERE is_public = 1 AND ?";
 
-    public List<RecipeCollection> findAllPublicRecipes(Session session) {
+    public List<RecipeCollection> findAllPublicRecipeCollections(Session session) {
         NativeQuery nativeQuery = createAllPublicDataNativeQuery(session, FIND_ALL_PUBLIC_RECIPE_COLLECTIONS_QUERY,
                 RecipeCollection.class);
 
         return executePublicRecipeCollectionQuery(nativeQuery);
     }
 
-    public List<RecipeCollection> findAllPublicRecipesWithFilters(Session session, Map<String, String> filters) {
+    public List<RecipeCollection> findAllPublicRecipeCollectionsWithFilters(Session session,
+                                                                            Map<String, String> filters) {
         setFilters(filters);
 
         NativeQuery nativeQuery = createAllPublicDataWithFiltersNativeQuery(session,
@@ -41,6 +42,6 @@ public class PublicRecipeCollectionFetcher extends PublicDataProcessor {
     }
 
     private void getAssociatedRecipeCollectionData(RecipeCollection recipeCollection) {
-        Hibernate.initialize(recipeCollection.getRecipes());
+        Hibernate.initialize(recipeCollection.getRecipeIds());
     }
 }

@@ -1,7 +1,5 @@
 package pl.edu.pjwstk.langustaserver.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
 import javax.persistence.*;
 import java.util.List;
 import java.util.UUID;
@@ -11,14 +9,12 @@ import java.util.UUID;
 public class RecipeCollection extends PublishableData {
     @Column(nullable = false)
     private String title;
-    @JsonIgnore
-    @ManyToMany
-    @JoinTable(
-            name = "recipe_collections",
-            joinColumns = @JoinColumn(name = "collection_id", referencedColumnName = "id"),
-            inverseJoinColumns = @JoinColumn(name = "recipe_id", referencedColumnName = "id")
-    )
-    private List<Recipe> recipes;
+    // TODO: Change to proper relation
+    // TODO: Change to field name to "recipe"
+    @ElementCollection(fetch = FetchType.LAZY)
+    @CollectionTable(name = "collection_recipes", joinColumns = @JoinColumn(name = "collection_id"))
+    @Column(name = "recipe_id")
+    private List<String> recipeIds;
 
     public RecipeCollection(String author, String description, String title) {
         super(author, description);
@@ -26,7 +22,6 @@ public class RecipeCollection extends PublishableData {
     }
 
     public RecipeCollection() {
-
     }
 
     @Override
@@ -46,11 +41,11 @@ public class RecipeCollection extends PublishableData {
         this.title = title;
     }
 
-    public List<Recipe> getRecipes() {
-        return recipes;
+    public List<String> getRecipeIds() {
+        return recipeIds;
     }
 
-    public void setRecipes(List<Recipe> recipes) {
-        this.recipes = recipes;
+    public void setRecipeIds(List<String> recipeIds) {
+        this.recipeIds = recipeIds;
     }
 }
