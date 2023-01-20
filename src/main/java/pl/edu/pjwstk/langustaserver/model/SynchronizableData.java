@@ -1,5 +1,6 @@
 package pl.edu.pjwstk.langustaserver.model;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Type;
 
@@ -29,6 +30,7 @@ public class SynchronizableData {
      * do not save in database
      */
     @Transient
+    @JsonProperty
     protected Boolean isOwned;
 
     public SynchronizableData() {
@@ -53,5 +55,9 @@ public class SynchronizableData {
 
     public void setUpdatedAt(String updatedAt) {
         this.updatedAt = updatedAt;
+    }
+
+    public void setIsOwned(Boolean isOwned) {
+        this.isOwned = isOwned;
     }
 }

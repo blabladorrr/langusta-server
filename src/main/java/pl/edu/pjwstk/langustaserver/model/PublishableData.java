@@ -29,6 +29,10 @@ public class PublishableData extends SynchronizableData {
         return author;
     }
 
+    public void setAuthor(String author) {
+        this.author = author;
+    }
+
     public String getDescription() {
         return description;
     }

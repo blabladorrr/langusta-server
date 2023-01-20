@@ -13,6 +13,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import pl.edu.pjwstk.langustaserver.component.PublicRecipeProcessor;
 import pl.edu.pjwstk.langustaserver.model.Recipe;
 import pl.edu.pjwstk.langustaserver.repository.RecipeRepository;
+import pl.edu.pjwstk.langustaserver.repository.UserRepository;
 import pl.edu.pjwstk.langustaserver.service.RecipeService;
 
 import java.util.HashMap;
@@ -32,7 +33,7 @@ public class RecipeServiceTest {
         // Mocking other hibernateFactory common called method behaviors
         when(hibernateFactory.openSession()).thenReturn(session);
         // Creating new object because of the above issue, @InjectMocks did not work in this case
-        recipeService = new RecipeService(recipeRepository, hibernateFactory, publicRecipeProcessor);
+        recipeService = new RecipeService(recipeRepository, userRepository, hibernateFactory, publicRecipeProcessor);
     }
 
     @AfterEach
@@ -42,6 +43,9 @@ public class RecipeServiceTest {
 
     @Mock
     private RecipeRepository recipeRepository;
+
+    @Mock
+    private UserRepository userRepository;
 
     @Mock
     private static SessionFactory hibernateFactory;
