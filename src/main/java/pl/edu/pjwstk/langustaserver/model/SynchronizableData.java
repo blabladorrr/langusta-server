@@ -1,41 +1,56 @@
 package pl.edu.pjwstk.langustaserver.model;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+import org.hibernate.annotations.Type;
+
 import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
 import javax.persistence.Transient;
-import java.time.LocalDateTime;
+import java.util.UUID;
 
 @MappedSuperclass
 public class SynchronizableData {
     @Id
-    protected String id;
-    protected LocalDateTime createdAt;
-    protected LocalDateTime updatedAt;
+    @Type(type = "uuid-char")
+    protected UUID id;
+    // TODO: Change date types in SynchronizableData back to LocalDateTime /ticket 37
+    // When frontend will properly format date change it back to proper date type
+    protected String createdAt;
+    protected String updatedAt;
     /**
      * data created by the current user is "owned" by them
      * it can be modified or deleted
      * do not save in database
      */
     @Transient
+    @JsonProperty
     protected Boolean isOwned;
 
     public SynchronizableData() {
-        createdAt = LocalDateTime.now();
+        //createdAt = LocalDateTime.now();
     }
 
-    public String getId() {
+    public UUID getId() {
         return id;
     }
 
-    public LocalDateTime getCreatedAt() {
+    public void setId() {
+        this.id = id;
+    }
+
+    public String getCreatedAt() {
         return createdAt;
     }
 
-    public LocalDateTime getUpdatedAt() {
+    public String getUpdatedAt() {
         return updatedAt;
     }
 
-    public void setUpdatedAt(LocalDateTime updatedAt) {
+    public void setUpdatedAt(String updatedAt) {
         this.updatedAt = updatedAt;
+    }
+
+    public void setIsOwned(Boolean isOwned) {
+        this.isOwned = isOwned;
     }
 }

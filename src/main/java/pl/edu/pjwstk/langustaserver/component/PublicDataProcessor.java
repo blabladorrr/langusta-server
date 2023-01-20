@@ -1,49 +1,33 @@
 package pl.edu.pjwstk.langustaserver.component;
 
-import org.hibernate.Hibernate;
 import org.hibernate.Session;
 import org.hibernate.query.NativeQuery;
 import org.hibernate.query.ParameterMetadata;
-import org.springframework.stereotype.Component;
-import pl.edu.pjwstk.langustaserver.model.Recipe;
 
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-@Component
-public class PublicRecipeProcessor {
-    private static final String FIND_ALL_PUBLIC_RECIPES_QUERY = "SELECT * FROM recipes WHERE is_public = 1";
-    private static final String FIND_ALL_PUBLIC_RECIPES_WITH_SEARCH_QUERY =
-            "SELECT * FROM recipes WHERE is_public = 1 AND ?";
-
+public abstract class PublicDataProcessor {
     private Map<String, String> filters;
 
-    public PublicRecipeProcessor() {
+    protected NativeQuery createAllPublicDataNativeQuery(Session session, String sqlQuery, Class<?> classType) {
+        NativeQuery nativeQuery = session.createNativeQuery(sqlQuery, classType);
+
+        return nativeQuery;
     }
 
-    public List<Recipe> findAllPublicRecipes(Session session) {
-        NativeQuery nativeQuery = session.createNativeQuery(FIND_ALL_PUBLIC_RECIPES_QUERY, Recipe.class);
-
-        return executePublicRecipeQuery(nativeQuery);
-    }
-
-    public List<Recipe> findAllPublicRecipesWithFilters(Session session, Map<String, String> filters) {
-        setFilters(filters);
-
-        String sqlQuery = FIND_ALL_PUBLIC_RECIPES_QUERY;
-
+    protected NativeQuery createAllPublicDataWithFiltersNativeQuery(Session session, String sqlQuery,
+                                                                    Class<?> classType) {
         String sqlQueryWhereStatement = prepareWhereStatementFromFilters();
-        if (sqlQueryWhereStatement.length() > 0) {
-            sqlQuery = FIND_ALL_PUBLIC_RECIPES_WITH_SEARCH_QUERY.replace("?", sqlQueryWhereStatement);
-        }
 
-        NativeQuery nativeQuery = session.createNativeQuery(sqlQuery, Recipe.class);
+        sqlQuery = sqlQuery.replace("?", sqlQueryWhereStatement);
+
+        NativeQuery nativeQuery = session.createNativeQuery(sqlQuery, classType);
 
         // Setting parameters for values to prevent from SQL Injection
         setAllFiltersParametersForNativeQuery(nativeQuery);
 
-        return executePublicRecipeQuery(nativeQuery);
+        return nativeQuery;
     }
 
     private String prepareWhereStatementFromFilters() {
@@ -98,20 +82,7 @@ public class PublicRecipeProcessor {
         }
     }
 
-    private List<Recipe> executePublicRecipeQuery(NativeQuery query) {
-        List<Recipe> recipeList = (List<Recipe>) query.getResultList();
-
-        recipeList.forEach(recipe -> getAssociatedRecipeData(recipe));
-
-        return recipeList;
-    }
-
-    private void getAssociatedRecipeData(Recipe recipe) {
-        Hibernate.initialize(recipe.getIngredients());
-        Hibernate.initialize(recipe.getSteps());
-    }
-
-    private void setFilters(Map<String, String> filters) {
+    protected void setFilters(Map<String, String> filters) {
         this.filters = filters;
     }
 }

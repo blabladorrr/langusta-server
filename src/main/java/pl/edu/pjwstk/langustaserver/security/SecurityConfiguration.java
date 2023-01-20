@@ -40,6 +40,9 @@ public class SecurityConfiguration {
                 .antMatchers(HttpMethod.POST, REGISTER_PATH).permitAll()
                 .antMatchers(HttpMethod.POST, RECIPES_GET_BY_ID).permitAll()
                 .antMatchers(HttpMethod.POST, RECIPES_GET_PUBLIC).permitAll()
+                // to be deleted - test only
+                .antMatchers(HttpMethod.GET, "/recipes/collections/**").permitAll()
+                // *******************
                 .anyRequest().authenticated()
                 .and()
                 .addFilterBefore(new ExceptionHandlerFilter(), AuthenticationFilter.class)

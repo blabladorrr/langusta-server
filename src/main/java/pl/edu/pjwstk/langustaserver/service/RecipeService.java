@@ -3,34 +3,72 @@ package pl.edu.pjwstk.langustaserver.service;
 import org.hibernate.Hibernate;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.query.NativeQuery;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
-import pl.edu.pjwstk.langustaserver.component.PublicRecipeProcessor;
+import pl.edu.pjwstk.langustaserver.component.PublicRecipeFetcher;
+import pl.edu.pjwstk.langustaserver.exception.UserNotFoundException;
 import pl.edu.pjwstk.langustaserver.model.Recipe;
+import pl.edu.pjwstk.langustaserver.model.User;
 import pl.edu.pjwstk.langustaserver.repository.RecipeRepository;
+import pl.edu.pjwstk.langustaserver.repository.UserRepository;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Service
 public class RecipeService {
     private final RecipeRepository recipeRepository;
+    private final UserRepository userRepository;
     private final SessionFactory hibernateFactory;
-    private final PublicRecipeProcessor publicRecipeProcessor;
+    private final PublicRecipeFetcher publicRecipeFetcher;
 
     public RecipeService(
             RecipeRepository recipeRepository,
+            UserRepository userRepository,
             SessionFactory hibernateFactory,
-            PublicRecipeProcessor publicRecipeProcessor
+            PublicRecipeFetcher publicRecipeFetcher
     ) {
         this.recipeRepository = recipeRepository;
+        this.userRepository = userRepository;
 
         if (hibernateFactory.unwrap(SessionFactory.class) == null) {
             throw new NullPointerException("Factory is not a hibernate factory");
         }
         this.hibernateFactory = hibernateFactory.unwrap(SessionFactory.class);
 
-        this.publicRecipeProcessor = publicRecipeProcessor;
+        this.publicRecipeFetcher = publicRecipeFetcher;
+    }
+
+    public List<Recipe> getUserRecipes() {
+        List<Recipe> recipeList;
+
+        recipeList = fetchUserRecipes(getCurrentUserId());
+
+        return recipeList;
+    }
+
+    private List<Recipe> fetchUserRecipes(UUID id) {
+        Session session = hibernateFactory.openSession();
+
+        // TODO: change it to CriteriaQuery
+        String query = "SELECT * FROM recipes where author = :userId";
+        NativeQuery<Recipe> nativeQuery = session.createNativeQuery(query, Recipe.class);
+        nativeQuery.setParameter("userId", id.toString());
+
+        List<Recipe> recipeList = (List<Recipe>) nativeQuery.getResultList();
+
+        recipeList.forEach(recipe -> getUserRecipeAssociatedDataAndSetIsOwnedFlag(recipe));
+
+        session.close();
+
+        return recipeList;
+    }
+
+    private void getUserRecipeAssociatedDataAndSetIsOwnedFlag(Recipe recipe) {
+        recipe.setIsOwned(true);
+
+        Hibernate.initialize(recipe.getIngredients());
+        Hibernate.initialize(recipe.getSteps());
     }
 
     public List<Recipe> getRecipesById(List<String> idList) {
@@ -44,7 +82,7 @@ public class RecipeService {
     private Recipe fetchRecipeById(String id) {
         Session session = hibernateFactory.openSession();
 
-        Recipe foundRecipe = (Recipe) session.find(Recipe.class, id);
+        Recipe foundRecipe = (Recipe) session.find(Recipe.class, UUID.fromString(id));
 
         if (foundRecipe != null) {
             Hibernate.initialize(foundRecipe.getIngredients());
@@ -54,28 +92,6 @@ public class RecipeService {
         session.close();
 
         return foundRecipe;
-    }
-
-    public List<Recipe> saveRecipes(List<Recipe> recipesToSave) {
-        recipeRepository.saveAll(recipesToSave);
-
-        return recipesToSave;
-    }
-
-    public List<String> deleteRecipes(List<String> idList) {
-        List<String> deletedRecipeIds = new ArrayList<>();
-
-        idList.forEach(id -> deleteRecipeIfExists(id, deletedRecipeIds));
-
-        return deletedRecipeIds;
-    }
-
-    private void deleteRecipeIfExists(String id, List<String> deletedRecipeIds) {
-        if (recipeRepository.existsById(id)) {
-            recipeRepository.deleteById(id);
-
-            deletedRecipeIds.add(id);
-        }
     }
 
     public List<Recipe> getPublicRecipes(Map<String, String> filters) {
@@ -89,14 +105,60 @@ public class RecipeService {
         Session session = hibernateFactory.openSession();
 
         if (filters.isEmpty()) {
-            foundRecipes = publicRecipeProcessor.findAllPublicRecipes(session);
+            foundRecipes = publicRecipeFetcher.findAllPublicRecipes(session);
         }
         else {
-            foundRecipes = publicRecipeProcessor.findAllPublicRecipesWithFilters(session, filters);
+            foundRecipes = publicRecipeFetcher.findAllPublicRecipesWithFilters(session, filters);
         }
 
         session.close();
 
         return foundRecipes;
+    }
+
+    public List<Recipe> saveRecipes(List<Recipe> recipesToSave) {
+        recipesToSave.forEach(recipe -> setAuthorForRecipeIfEmpty(recipe));
+
+        recipeRepository.saveAll(recipesToSave);
+
+        return recipesToSave;
+    }
+
+    private void setAuthorForRecipeIfEmpty(Recipe recipe) {
+        if (recipe.getAuthor() == null) {
+            recipe.setAuthor(getCurrentUserId().toString());
+        }
+    }
+
+    public List<String> deleteRecipes(List<String> idList) {
+        List<String> deletedRecipeIds = new ArrayList<>();
+
+        idList.forEach(id -> deleteRecipeIfExists(UUID.fromString(id), deletedRecipeIds));
+
+        return deletedRecipeIds;
+    }
+
+    private void deleteRecipeIfExists(UUID id, List<String> deletedRecipeIds) {
+        if (recipeRepository.existsById(id)) {
+            recipeRepository.deleteById(id);
+
+            deletedRecipeIds.add(id.toString());
+        }
+    }
+
+    private UUID getCurrentUserId() {
+        String username = SecurityContextHolder.getContext().getAuthentication().getName();
+        Optional<User> optionalUser = userRepository.findByUsername(username);
+
+        return getPresentUser(optionalUser, username).getId();
+    }
+
+    private User getPresentUser(Optional<User> optionalUser, String username) {
+        if (optionalUser.isPresent()) {
+            return optionalUser.get();
+        }
+        else {
+            throw new UserNotFoundException(username);
+        }
     }
 }
